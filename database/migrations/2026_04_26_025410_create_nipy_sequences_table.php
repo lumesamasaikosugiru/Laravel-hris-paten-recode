@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,6 +12,13 @@ return new class extends Migration
     {
         Schema::create('nipy_sequences', function (Blueprint $table) {
             $table->id();
+            $table->string('year'); // YY
+            $table->string('education_code');
+            $table->string('category_code');
+
+            $table->unsignedInteger('last_number')->default(0);
+
+            $table->unique(['year', 'education_code', 'category_code']);
             $table->timestamps();
         });
     }

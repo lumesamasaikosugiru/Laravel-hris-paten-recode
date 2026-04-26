@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,6 +12,19 @@ return new class extends Migration
     {
         Schema::create('leave_balances', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('employee_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('leave_type_id')->constrained();
+
+            $table->integer('year')->index();
+
+            $table->integer('allocated_days')->default(0);
+            $table->integer('used_days')->default(0);
+
+            $table->timestamps();
+
+            // 🔴 ANTI DUPLICATE BALANCE
+            $table->unique(['employee_id', 'leave_type_id', 'year']);
             $table->timestamps();
         });
     }
