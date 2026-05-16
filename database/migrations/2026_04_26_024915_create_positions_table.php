@@ -12,14 +12,12 @@ return new class extends Migration {
     {
         Schema::create('positions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('school_id')->constrained()->cascadeOnDelete();
             $table->string('name');
-            $table->foreignId('school_id')
-                ->constrained()
-                ->cascadeOnDelete();
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
+            $table->timestamps();
 
             $table->unique(['school_id', 'name']);
-            $table->timestamps();
         });
     }
 

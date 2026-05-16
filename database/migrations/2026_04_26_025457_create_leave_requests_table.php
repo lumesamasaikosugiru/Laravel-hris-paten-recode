@@ -14,22 +14,16 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('employee_id')->constrained()->cascadeOnDelete();
             $table->foreignId('school_id')->constrained()->cascadeOnDelete();
-
             $table->foreignId('leave_type_id')->constrained();
-
             $table->date('start_date');
             $table->date('end_date');
-
-            $table->integer('total_days');
-
+            $table->unsignedSmallInteger('total_days');
             $table->text('reason')->nullable();
-
-            // APPROVAL FLOW
-            $table->string('status')->default('pending')->index();
-            // pending, approved, rejected
-
+            $table->string('attachment_path')->nullable(); // tambah: lampiran surat
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending')->index();
             $table->foreignId('approved_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamp('approved_at')->nullable();
+            $table->text('rejection_reason')->nullable(); // tambah: alasan ditolak
             $table->timestamps();
         });
     }

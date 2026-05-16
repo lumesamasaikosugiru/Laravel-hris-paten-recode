@@ -12,12 +12,11 @@ return new class extends Migration {
     {
         Schema::create('applicant_skills', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('applicant_biodata_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('applicant_biodata_id')->constrained('applicant_biodatas')->cascadeOnDelete();
             $table->foreignId('skill_id')->constrained()->cascadeOnDelete();
-
-            $table->unique(['applicant_id', 'skill_id']);
-
             $table->timestamps();
+
+            $table->unique(['applicant_biodata_id', 'skill_id']);
         });
     }
 

@@ -13,9 +13,12 @@ return new class extends Migration {
         Schema::create('schools', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('level_code'); // SD, SMP, SMA, SMK
-            $table->string('npsn')->nullable()->index();
+            $table->string('level_code');           // SD, SMP, SMA, SMK
+            $table->string('npsn')->nullable()->unique();
             $table->string('address')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

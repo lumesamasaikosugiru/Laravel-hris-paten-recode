@@ -13,15 +13,16 @@ return new class extends Migration {
         Schema::create('position_assignments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employee_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('position_id')->constrained();
-            $table->foreignId('department_id')->constrained();
-            $table->foreignId('school_id')->constrained();
-
-            $table->date('start_date');
+            $table->foreignId('school_id')->constrained()->cascadeOnDelete(); // fix BUG-4
+            $table->foreignId('department_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('position_id')->constrained()->cascadeOnDelete();
+            $table->date('start_date')->index();
             $table->date('end_date')->nullable();
-            $table->boolean('is_active')->default(true)->index();
-
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
+
+            $table->index(['employee_id', 'is_active']);
+            $table->index(['school_id', 'employee_id']); // untuk query "siapa saja di sekolah X"
         });
     }
 

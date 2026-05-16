@@ -12,18 +12,16 @@ return new class extends Migration {
     {
         Schema::create('job_applicants', function (Blueprint $table) {
             $table->id();
-
             $table->foreignId('job_vacancy_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('applicant_id')->constrained('applicant_biodata')->cascadeOnDelete();
-
-            $table->string('status')->index();
-            // applied, screening, interview, accepted, rejected
-
-            $table->timestamp('applied_at');
-
+            $table->foreignId('applicant_biodata_id')->constrained('applicant_biodatas')->cascadeOnDelete();
+            $table->enum('status', ['applied', 'screening', 'interview', 'accepted', 'rejected'])
+                ->default('applied')
+                ->index();
+            $table->text('notes')->nullable();       // tambah: catatan HR per tahap
+            $table->timestamp('applied_at')->useCurrent();
             $table->timestamps();
 
-            $table->unique(['job_vacancy_id', 'applicant_id']);
+            $table->unique(['job_vacancy_id', 'applicant_biodata_id']);
         });
     }
 

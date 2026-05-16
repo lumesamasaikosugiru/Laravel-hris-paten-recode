@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->date('start_date');
             $table->date('end_date')->nullable();
             $table->string('contract_number')->nullable();
-            $table->text('description');
+            $table->text('description')->nullable(); // fix IMP-3: nullable
             $table->timestamps();
         });
     }

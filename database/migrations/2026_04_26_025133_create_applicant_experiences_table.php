@@ -12,14 +12,12 @@ return new class extends Migration {
     {
         Schema::create('applicant_experiences', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('applicant_biodata_id')->constrained()->cascadeOnDelete();
-            $table->string('job_title');
+            $table->foreignId('applicant_biodata_id')->constrained('applicant_biodatas')->cascadeOnDelete();
             $table->string('company');
-            $table->string('position');
-
+            $table->string('position');             // fix: hapus 'job_title' duplikat, pakai 'position'
             $table->date('start_date');
-            $table->date('end_date')->nullable();
-            $table->text('description');
+            $table->date('end_date')->nullable();   // nullable = masih bekerja di sini
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

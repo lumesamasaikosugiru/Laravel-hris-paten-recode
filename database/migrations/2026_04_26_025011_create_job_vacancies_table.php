@@ -12,19 +12,16 @@ return new class extends Migration {
     {
         Schema::create('job_vacancies', function (Blueprint $table) {
             $table->id();
-
             $table->foreignId('school_id')->constrained()->cascadeOnDelete();
             $table->foreignId('department_id')->constrained()->cascadeOnDelete();
             $table->foreignId('position_id')->constrained()->cascadeOnDelete();
-
+            $table->foreignId('employee_category_id')->constrained(); // tambah: kategori yang dicari
             $table->string('title');
             $table->text('description')->nullable();
-
+            $table->unsignedSmallInteger('quota')->default(1); // fix IMP-5: tambah quota
             $table->date('open_date');
             $table->date('close_date')->nullable();
-
             $table->boolean('is_active')->default(true)->index();
-
             $table->timestamps();
         });
     }

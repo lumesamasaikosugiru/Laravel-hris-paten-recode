@@ -10,14 +10,14 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('applicant_education', function (Blueprint $table) {
+        Schema::create('applicant_educations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('applicant_biodata_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('applicant_biodata_id')->constrained('applicant_biodatas')->cascadeOnDelete();
             $table->foreignId('education_level_id')->constrained();
-
             $table->string('institution');
             $table->string('major')->nullable();
             $table->year('graduation_year')->nullable();
+            $table->boolean('is_latest')->default(false); // tambah: tandai pendidikan terakhir
             $table->timestamps();
         });
     }

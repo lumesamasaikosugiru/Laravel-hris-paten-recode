@@ -12,8 +12,9 @@ return new class extends Migration {
     {
         Schema::create('education_levels', function (Blueprint $table) {
             $table->id();
+            $table->string('code')->unique();   // SD, SMP, SMA, S1, S2, dll
             $table->string('name');
-            $table->string('code')->unique();
+            $table->unsignedTinyInteger('sort_order')->default(0); // untuk urutan tampil
             $table->timestamps();
         });
     }

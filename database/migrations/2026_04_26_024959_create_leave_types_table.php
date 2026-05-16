@@ -13,8 +13,9 @@ return new class extends Migration {
         Schema::create('leave_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('default_days')->default(0);
-            $table->string('description')->nullable();
+            $table->unsignedSmallInteger('default_days')->default(0);
+            $table->boolean('requires_approval')->default(true);
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

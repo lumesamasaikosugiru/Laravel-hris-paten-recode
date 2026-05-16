@@ -12,8 +12,9 @@ return new class extends Migration {
     {
         Schema::create('employee_categories', function (Blueprint $table) {
             $table->id();
-            $table->unsignedTinyInteger('code')->unique(); // 11,12,21,22
+            $table->unsignedTinyInteger('code')->unique(); // 11, 12, 21, 22
             $table->string('name');
+            $table->unsignedTinyInteger('probation_months')->default(0);
             $table->timestamps();
         });
     }

@@ -12,27 +12,19 @@ return new class extends Migration {
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
-
             $table->foreignId('employee_id')->constrained()->cascadeOnDelete();
             $table->foreignId('school_id')->constrained()->cascadeOnDelete();
-
             $table->date('date')->index();
-
-            // CHECK-IN / OUT
             $table->timestamp('check_in_at')->nullable();
             $table->timestamp('check_out_at')->nullable();
-
-            // AUTO CALCULATED
-            $table->integer('late_minutes')->default(0);
-            $table->integer('work_minutes')->default(0);
-
-            // STATUS
-            $table->string('status')->index();
-            // present, absent, leave, holiday
-
+            $table->unsignedSmallInteger('late_minutes')->default(0);
+            $table->unsignedSmallInteger('work_minutes')->default(0);
+            $table->enum('status', ['present', 'absent', 'leave', 'holiday'])->index();
+            $table->string('check_in_method')->default('manual'); // fix IMP-6
+            // manual | fingerprint | qr_code | mobile
+            $table->text('notes')->nullable();
             $table->timestamps();
 
-            // 🔴 ANTI DUPLICATE
             $table->unique(['employee_id', 'date']);
         });
     }

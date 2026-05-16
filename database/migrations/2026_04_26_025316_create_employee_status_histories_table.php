@@ -13,8 +13,14 @@ return new class extends Migration {
         Schema::create('employee_status_histories', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employee_id')->constrained()->cascadeOnDelete();
-            $table->string('status');
+            $table->string('status_from')->nullable(); // tambah: dari status apa
+            $table->string('status_to');
             $table->date('effective_date');
+            $table->foreignId('changed_by')            // fix IMP-2: siapa yang mengubah
+                ->nullable()
+                ->constrained('users')
+                ->nullOnDelete();
+            $table->text('notes')->nullable();         // fix IMP-2: alasan perubahan
             $table->timestamps();
         });
     }

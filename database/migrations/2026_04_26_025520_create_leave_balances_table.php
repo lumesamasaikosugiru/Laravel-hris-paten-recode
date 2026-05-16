@@ -12,20 +12,14 @@ return new class extends Migration {
     {
         Schema::create('leave_balances', function (Blueprint $table) {
             $table->id();
-
             $table->foreignId('employee_id')->constrained()->cascadeOnDelete();
             $table->foreignId('leave_type_id')->constrained();
-
-            $table->integer('year')->index();
-
-            $table->integer('allocated_days')->default(0);
-            $table->integer('used_days')->default(0);
-
+            $table->unsignedSmallInteger('year')->index();
+            $table->unsignedSmallInteger('allocated_days')->default(0);
+            $table->unsignedSmallInteger('used_days')->default(0);
+            $table->unsignedSmallInteger('remaining_days')->default(0); // fix IMP-4
             $table->timestamps();
-
-            // 🔴 ANTI DUPLICATE BALANCE
             $table->unique(['employee_id', 'leave_type_id', 'year']);
-            $table->timestamps();
         });
     }
 
