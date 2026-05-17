@@ -15,11 +15,24 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Urutan WAJIB dipatuhi karena ada foreign key dependency
+        $this->call([
+                // 1. Auth & Roles (tidak ada dependency)
+            RolePermissionSeeder::class,
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+                // 2. Master Data (urutan penting)
+            EducationLevelSeeder::class,
+            EmployeeCategorySeeder::class,
+            LeaveTypeSeeder::class,
+            SchoolSeeder::class,
+
+                // 3. User default
+            SuperAdminSeeder::class,
         ]);
+
+        // Demo data HANYA untuk environment local/development
+        if (app()->environment(['local', 'development'])) {
+            $this->call(DemoSeeder::class);
+        }
     }
 }
