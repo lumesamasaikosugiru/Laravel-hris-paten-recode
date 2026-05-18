@@ -50,4 +50,9 @@ class UserResource extends Resource
             'edit' => EditUser::route('/{record}/edit'),
         ];
     }
+
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->hasRole('super_admin');
+    }
 }

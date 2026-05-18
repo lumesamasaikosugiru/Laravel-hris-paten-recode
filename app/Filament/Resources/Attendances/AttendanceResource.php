@@ -50,4 +50,21 @@ class AttendanceResource extends Resource
             'edit' => EditAttendance::route('/{record}/edit'),
         ];
     }
+
+    // LeaveRequestResource, AttendanceResource, JobVacancyResource — pola sama
+    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        $query = parent::getEloquentQuery();
+        $user = auth()->user();
+
+        if ($user->hasRole('kepala_sekolah')) {
+            $query->where('school_id', $user->employee?->school_id);
+        }
+
+        if ($user->hasRole('employee')) {
+            $query->where('employee_id', $user->employee?->id);
+        }
+
+        return $query;
+    }
 }

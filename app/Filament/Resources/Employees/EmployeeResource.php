@@ -60,4 +60,51 @@ class EmployeeResource extends Resource
                 SoftDeletingScope::class,
             ]);
     }
+
+    // === AUTHORIZATION ===
+
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->can('viewAny', Employee::class);
+    }
+
+    public static function canCreate(): bool
+    {
+        return auth()->user()->can('create', Employee::class);
+    }
+
+    public static function canEdit(\Illuminate\Database\Eloquent\Model $record): bool
+    {
+        return auth()->user()->can('update', $record);
+    }
+
+    public static function canDelete(\Illuminate\Database\Eloquent\Model $record): bool
+    {
+        return auth()->user()->can('delete', $record);
+    }
+
+    public static function canView(\Illuminate\Database\Eloquent\Model $record): bool
+    {
+        return auth()->user()->can('view', $record);
+    }
+
+    // === SCOPE QUERY — Kepala sekolah hanya lihat data sekolahnya ===
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+        $user = auth()->user();
+
+        if ($user->hasRole('kepala_sekolah')) {
+            $schoolId = $user->employee?->school_id;
+            $query->where('school_id', $schoolId);
+        }
+
+        if ($user->hasRole('employee')) {
+            // Employee hanya lihat dirinya sendiri
+            $query->where('id', $user->employee?->id);
+        }
+
+        return $query;
+    }
 }
